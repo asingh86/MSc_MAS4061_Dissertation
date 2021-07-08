@@ -91,6 +91,7 @@ class DataExtractor:
                     elif polarity == -1:
                         test_neg_writer.writerow(fields)
 
+    # ToDo: split this function so it can read and output individual file
     def get_data(self, sample_size: float = 70, seed: int = 123) -> {str: pd.DataFrame}:
         """
         read or download the data file
