@@ -6,6 +6,7 @@ import gzip
 import random
 from typing import BinaryIO
 import csv
+import numpy as np
 
 
 class DataExtractor:
@@ -18,7 +19,7 @@ class DataExtractor:
         :return: list of file paths
         """
         file_name = self._config['data_url'].split("/")[-1].replace('.', "_") + '.gz'
-        file_path = os.path.join(os.getcwd(), 'data/', file_name)
+        file_path = os.path.join(os.getcwd(), '../data/', file_name)
         header_filepath = os.path.join(os.getcwd(), self._config['files']['header'])
         train_pos_filepath = os.path.join(os.getcwd(), self._config['files']['train_pos'])
         train_neg_filepath = os.path.join(os.getcwd(), self._config['files']['train_neg'])
@@ -126,3 +127,15 @@ class DataExtractor:
         for file_path in combined_filepath:
             if os.path.exists(file_path):
                 os.remove(file_path)
+
+    def process_freq_text(self):
+        files = self.get_data()
+        train_pos = files['train_pos']
+        train_neg = files['train_neg']
+
+        all_reviews = train_neg[13].to_list() + train_pos[13].to_list()
+
+        labels = np.append(np.ones((len(train_neg))), np.zeros((len(train_pos))))
+        labels = labels.tolist()
+
+        return all_reviews, labels
