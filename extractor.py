@@ -19,7 +19,7 @@ class DataExtractor:
         :return: list of file paths
         """
         file_name = self._config['data_url'].split("/")[-1].replace('.', "_") + '.gz'
-        file_path = os.path.join(os.getcwd(), '../data/', file_name)
+        file_path = os.path.join(os.getcwd(), 'data/', file_name)
         header_filepath = os.path.join(os.getcwd(), self._config['files']['header'])
         train_pos_filepath = os.path.join(os.getcwd(), self._config['files']['train_pos'])
         train_neg_filepath = os.path.join(os.getcwd(), self._config['files']['train_neg'])
