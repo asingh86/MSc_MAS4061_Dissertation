@@ -8,3 +8,11 @@ files:
   train_neg: data/train_neg.tsv
   test_pos: data/test_pos.tsv
   test_neg: data/test_neg.tsv
+
+filters:
+  manual_stopwords_list: ['amazon','card']
+  lowercase: True #True or False
+  stopwords: True #True or False
+  manual_stopwords: True #True or False
+  punctuation: True #True or False
+  lemmatize: True #True or False

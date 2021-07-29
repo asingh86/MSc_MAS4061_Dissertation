@@ -130,12 +130,13 @@ class DataExtractor:
 
     def process_freq_text(self):
         files = self.get_data()
-        train_pos = files['train_pos']
-        train_neg = files['train_neg']
 
-        all_reviews = train_neg[13].to_list() + train_pos[13].to_list()
+        train_reviews = files['train_neg'][13].to_list() + files['train_pos'][13].to_list()
+        train_labels = np.append(np.ones((len(files['train_neg']))), np.zeros((len(files['train_pos']))))
+        train_labels = train_labels.tolist()
 
-        labels = np.append(np.ones((len(train_neg))), np.zeros((len(train_pos))))
-        labels = labels.tolist()
+        test_reviews = files['test_neg'][13].to_list() + files['test_pos'][13].to_list()
+        test_labels = np.append(np.ones((len(files['test_neg']))), np.zeros((len(files['test_pos']))))
+        test_labels = test_labels.tolist()
 
-        return all_reviews, labels
+        return train_reviews, train_labels, test_reviews, test_labels
