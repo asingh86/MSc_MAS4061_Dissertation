@@ -11,6 +11,9 @@ import numpy as np
 
 class DataExtractor:
 
+    if not os.path.exists(common.read_configs()['data_directory']):
+        os.makedirs(common.read_configs()['data_directory'])
+
     def __init__(self):
         self._config = common.read_configs()
 

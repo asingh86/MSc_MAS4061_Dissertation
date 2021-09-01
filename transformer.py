@@ -1,7 +1,6 @@
 import pandas as pd
 from utils.extractor import DataExtractor
 from utils.text_processing import TextProcessing
-from category_encoders import TargetEncoder
 
 
 class Transformer:
@@ -52,11 +51,19 @@ class Transformer:
 
     def build_features(self):
         train_data, test_data = self.model_data()
+        selected_features = ['helpful_votes', 'total_votes', 'negative_score', 'positive_score', 'vine_encoded',
+                             'verified_purchase_encoded']
+        selected_label = 'target_label'
 
-        encoder = TargetEncoder()
-        train_data['product_category_encoded'] = encoder.fit_transform(train_data['product_category'],
-                                                                       train_data['target_label'])
         train_data['vine_encoded'] = train_data['vine'].apply(lambda x: 1 if x == 'Y' else 0)
         train_data['verified_purchase_encoded'] = train_data['verified_purchase'].apply(lambda x: 1 if x == 'Y' else 0)
 
-        test_data[]
+        test_data['vine_encoded'] = test_data['vine'].apply(lambda x: 1 if x == 'Y' else 0)
+        test_data['verified_purchase_encoded'] = test_data['verified_purchase'].apply(lambda x: 1 if x == 'Y' else 0)
+
+        x_train = train_data[selected_features]
+        x_test = test_data[selected_features]
+        y_train = train_data[selected_label]
+        y_test = test_data[selected_label]
+
+        return x_train, x_test, y_train, y_test
