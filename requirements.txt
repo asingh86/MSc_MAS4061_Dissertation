@@ -9,3 +9,4 @@ dask==2021.4.0
 memory-profiler==0.58.0
 category-encoders==2.2.2
 matplotlib==3.4.3
+gensim==4.1.0

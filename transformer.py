@@ -1,6 +1,7 @@
 import pandas as pd
 from utils.extractor import DataExtractor
 from utils.text_processing import TextProcessing
+from gensim import corpora
 
 
 class Transformer:
@@ -67,3 +68,16 @@ class Transformer:
         y_test = test_data[selected_label]
 
         return x_train, x_test, y_train, y_test
+
+    def build_corpus_id2word_mapping(self):
+        train_reviews, train_labels, test_reviews, test_labels = self.__extract_data.process_freq_text()
+
+        clean_list = self.__process_text.lda_processing(train_reviews)
+
+        id2word = corpora.Dictionary(clean_list)
+        texts = clean_list
+        corpus = [id2word.doc2bow(text) for text in texts]
+
+        return corpus, id2word
+
+

@@ -66,7 +66,7 @@ class TextProcessing:
         freq = {}
         for sentence, y in zip(sentences, ys):
             if not self.isNaN(sentence):
-                for _word in self.process_text(sentence,):
+                for _word in self.process_text(sentence, ):
                     pair = (_word, y)
                     freq[pair] = freq.get(pair, 0) + 1
         return freq
@@ -88,3 +88,21 @@ class TextProcessing:
             x[i, :] = [neg, pos, ys[i]]
         return x
 
+    def lda_processing(self, sentences: [str]):
+        clean_list = []
+        for sentence in sentences:
+            if not self.isNaN(sentence):
+                clean_text = self.process_text(sentence, )
+                if clean_text:
+                    clean_list.append(clean_text)
+        return clean_list
+
+    def lda_test_data_processing(self, sentences: str):
+        clean_list = []
+        for sentence in sentences:
+            if not self.isNaN(sentence):
+                clean_text = self.process_text(sentence, )
+            else:
+                clean_text = []
+            clean_list.append(clean_text)
+        return clean_list

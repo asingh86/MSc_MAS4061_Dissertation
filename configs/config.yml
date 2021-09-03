@@ -17,3 +17,7 @@ filters:
   manual_stopwords: True #True or False
   punctuation: True #True or False
   lemmatize: True #True or False
+
+lda:
+  num_topics: 2
+
