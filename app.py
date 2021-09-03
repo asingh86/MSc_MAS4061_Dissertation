@@ -44,4 +44,21 @@ def lda_model_results():
             test_topic = -1
         test_topics.append(test_topic)
 
-    return test_topics
+    final_prediction=[]
+    for item in test_topics:
+        if isinstance(item, int):
+            i = -1
+        if not isinstance(item, int) and len(item)<2:
+            v = item[0]
+            if v ==0:
+                i = 1
+            else:
+                i = 0
+        if not isinstance(item, int) and len(item)==2:
+            if item[0][1] > item[1][1]:
+                i = 1
+            else:
+                i = 0
+        final_prediction.append(i)
+
+    return test_topics, final_prediction
