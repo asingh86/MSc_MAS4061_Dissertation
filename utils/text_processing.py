@@ -6,6 +6,7 @@ from nltk import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from utils import common
+from gensim import corpora
 
 # download necessary files
 nltk.download('stopwords')
@@ -106,3 +107,11 @@ class TextProcessing:
                 clean_text = []
             clean_list.append(clean_text)
         return clean_list
+
+    def lda_model_data(self, train_reviews):
+        clean_list = self.lda_processing(train_reviews)
+        id2word = corpora.Dictionary(clean_list)
+        texts = clean_list
+        corpus = [id2word.doc2bow(text) for text in texts]
+
+        return clean_list, id2word, corpus

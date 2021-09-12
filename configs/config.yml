@@ -20,4 +20,14 @@ filters:
 
 lda:
   num_topics: 2
+  coherence: c_v
+  min_topics: 2
+  max_topics: 11
+  step_size: 1
+  alpha_min: 0.01
+  alpha_max: 1
+  alpha_increment: 0.3
+  beta_min: 0.01
+  beta_max: 1
+  beta_increment: 0.3
 

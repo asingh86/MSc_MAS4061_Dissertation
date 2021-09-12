@@ -10,3 +10,6 @@ memory-profiler==0.58.0
 category-encoders==2.2.2
 matplotlib==3.4.3
 gensim==4.1.0
+sklearn==0.24.2
+tqdm==4.62.2
+pyLDAvis==3.3.1

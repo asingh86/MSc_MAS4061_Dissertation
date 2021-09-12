@@ -2,6 +2,41 @@ from transformer import Transformer
 from model import logistic_regression, lda
 from utils import metrics, extractor, text_processing
 from gensim import corpora
+import pandas
+
+
+def lda_hyperparameter_extraction() -> pd.DataFrame:
+    e = extractor.DataExtractor()
+    tp = text_processing.TextProcessing()
+
+    train_reviews, train_labels, test_reviews, test_labels = e.process_freq_text()
+    clean_list, id2word, corpus = tp.lda_model_data(train_reviews)
+
+    ld = lda.LDA(corpus=corpus, id2word=id2word, clean_list=clean_list)
+    lda_cv_df = ld.lda_cross_validation()
+    return lda_cv_df
+
+# todo: this function need updating
+def lda_model_train_vis_predict():
+    t = Transformer()
+    e = extractor.DataExtractor()
+    tp = text_processing.TextProcessing()
+
+    train_reviews, train_labels, test_reviews, test_labels = e.process_freq_text()
+    clean_list, id2word, corpus = tp.lda_model_data(train_reviews)
+    lda_model = lda.build_lda_model(corpus=corpus, id2word=id2word)
+    coherence_score = lda.coherence_score(lda_model, id2word, clean_list)
+
+    test_topics = []
+    clean_reviews = tp.lda_test_data_processing(test_reviews)
+    for clean_review in clean_reviews:
+        if clean_review:
+            test_topic = lda_model[id2word.doc2bow(clean_review)]
+        else:
+            test_topic = -1
+        test_topics.append(test_topic)
+
+    return lda_model, coherence_score, test_topics
 
 
 def logistic_regression_results():
@@ -17,48 +52,3 @@ def logistic_regression_results():
 
     return print(f'Precision: {precision}, Recall: {recall} and f1_score: {f1_score}')
 
-
-def lda_model_results():
-    t = Transformer()
-    e = extractor.DataExtractor()
-    tp = text_processing.TextProcessing()
-
-    # get data
-    train_reviews, train_labels, test_reviews, test_labels = e.process_freq_text()
-
-    # perform preprocessing
-    clean_list = tp.lda_processing(train_reviews)
-    id2word = corpora.Dictionary(clean_list)
-    texts = clean_list
-    corpus = [id2word.doc2bow(text) for text in texts]
-
-    # build model
-    lda_model = lda.build_lda_model(corpus=corpus, id2word=id2word)
-
-    test_topics = []
-    clean_reviews = tp.lda_test_data_processing(test_reviews)
-    for clean_review in clean_reviews:
-        if clean_review:
-            test_topic = lda_model[id2word.doc2bow(clean_review)]
-        else:
-            test_topic = -1
-        test_topics.append(test_topic)
-
-    final_prediction=[]
-    for item in test_topics:
-        if isinstance(item, int):
-            i = -1
-        if not isinstance(item, int) and len(item)<2:
-            v = item[0]
-            if v ==0:
-                i = 1
-            else:
-                i = 0
-        if not isinstance(item, int) and len(item)==2:
-            if item[0][1] > item[1][1]:
-                i = 1
-            else:
-                i = 0
-        final_prediction.append(i)
-
-    return test_topics, final_prediction
